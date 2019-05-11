@@ -55,10 +55,10 @@ int main() {
 
 
     int j = 0;
-    int phys[20];
+    int physFIFO[20];
     while (j < 20)
     {
-        phys[j] = 0;
+        physFIFO[j] = 0;
         j++;
     }
     int virt[50];
@@ -67,14 +67,14 @@ int main() {
     int o = 0;
     while (j <= all) {
         if (input[j].action == 'A') {
-            if (phys[input[j].page] == 0)
+            if (physFIFO[input[j].page] == 0)
             {
-                phys[input[j].page] = input[j].pid;
+                physFIFO[input[j].page] = input[j].pid;
             }
             else {
                 while(t <= 20 && o == 0) {
-                    if (phys[t] == 0) {
-                        phys[t] = input[j].pid;
+                    if (physFIFO[t] == 0) {
+                        physFIFO[t] = input[j].pid;
                         o = 1;
                     }
                     t++;
@@ -84,16 +84,16 @@ int main() {
             }
         }
         if (input[j].action == 'R' || input[j].action == 'W' || input[j].action == 'F') {
-            if(phys[input[j].page] = input[j].pid) {
+            if(physFIFO[input[j].page] = input[j].pid) {
                 if (input[j].action == 'F') {
-                    phys[input[j].page] = 0;
+                    physFIFO[input[j].page] = 0;
                 }
             }
             else {
                 int r = 0;
                 while (r < 20) {
-                    if (phys[r] == input[j].pid) {
-                        phys[r] = 0;
+                    if (physFIFO[r] == input[j].pid) {
+                        physFIFO[r] = 0;
                     }
                     r++;
                 }
@@ -102,17 +102,22 @@ int main() {
         if (input[j].action == 'T') {
             int r = 0;
             while (r < 20) {
-                if (phys[r] == input[j].pid) {
-                    phys[r] = 0;
+                if (physFIFO[r] == input[j].pid) {
+                    physFIFO[r] = 0;
                 }
                 r++;
             }
         }
         j++;
     }
+
+
+
+    
+    printf("\nFIFO Policy\n");
     j = 0;
     while (j < 20) {//Added to check stored memory.dat values
-        printf("\nLocation %i: %i", j, phys[j]);
+        printf("\nLocation %i: %i", j, physFIFO[j]);
         j++;
     }
     printf("\n");
