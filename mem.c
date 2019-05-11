@@ -52,11 +52,11 @@ int main() {
     }
     all--;
     all--;
+
+
     int j = 0;
-    printf("\n");
-    j = 0;
-    int phys[30];
-    while (j < 30)
+    int phys[20];
+    while (j < 20)
     {
         phys[j] = 0;
         j++;
@@ -64,6 +64,7 @@ int main() {
     int virt[50];
     j = 0;
     int t = 0;
+    int o = 0;
     while (j <= all) {
         if (input[j].action == 'A') {
             if (phys[input[j].page] == 0)
@@ -71,14 +72,15 @@ int main() {
                 phys[input[j].page] = input[j].pid;
             }
             else {
-                while(t <= 30)
-                {
-                    if (phys[input[j].page] == 0) {
+                while(t <= 20 && o == 0) {
+                    if (phys[t] == 0) {
                         phys[t] = input[j].pid;
+                        o = 1;
                     }
                     t++;
                 }
                 t = 0;
+                o = 0;
             }
         }
         if (input[j].action == 'R' || input[j].action == 'W' || input[j].action == 'F') {
@@ -109,7 +111,7 @@ int main() {
         j++;
     }
     j = 0;
-    while (j < 30) {//Added to check stored memory.dat values
+    while (j < 20) {//Added to check stored memory.dat values
         printf("\nLocation %i: %i", j, phys[j]);
         j++;
     }
