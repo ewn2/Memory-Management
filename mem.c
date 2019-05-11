@@ -44,9 +44,9 @@ int main() {
     }
     while(fgets(line, sizeof(line), memList) != NULL && i < all) {
         current = sscanf(line, "%i %c %i", &input[i].pid, &input[i].action, &input[i].page);
-        if (input[i].page != 1 && input[i].page != 2)
+        if (input[i].action == 'C' || input[i].action == 'T')
         {
-            input[i].page = 0;
+            input[i].page = -1;
         }
         all++;
         i++;
