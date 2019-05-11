@@ -31,7 +31,7 @@ int main() {
     char line[200];
     int i = 0, all = 1, current;
     FILE *memList;
-    struct proc input[100];
+    struct proc input[200];
     time_t theTime;
     struct tm * timeinfo;
     time (&theTime);
@@ -44,8 +44,7 @@ int main() {
     }
     while(fgets(line, sizeof(line), memList) != NULL && i < all) {
         current = sscanf(line, "%i %c %i", &input[i].pid, &input[i].action, &input[i].page);
-        if (input[i].action == 'C' || input[i].action == 'T')
-        {
+        if (input[i].action == 'C' || input[i].action == 'T') {
             input[i].page = -1;
         }
         all++;
@@ -54,12 +53,66 @@ int main() {
     all--;
     all--;
     int j = 0;
-    while (j <= all) {//Added to check stored memory.dat values
-        printf("\n%i %c %i", input[j].pid, input[j].action, input[j].page);
-        printf("---%i", j);
+    printf("\n");
+    j = 0;
+    int phys[30];
+    while (j < 30)
+    {
+        phys[j] = 0;
+        j++;
+    }
+    int virt[50];
+    j = 0;
+    int t = 0;
+    while (j <= all) {
+        if (input[j].action == 'A') {
+            if (phys[input[j].page] == 0)
+            {
+                phys[input[j].page] = input[j].pid;
+            }
+            else {
+                while(t <= 30)
+                {
+                    if (phys[input[j].page] == 0) {
+                        phys[t] = input[j].pid;
+                    }
+                    t++;
+                }
+                t = 0;
+            }
+        }
+        if (input[j].action == 'R' || input[j].action == 'W' || input[j].action == 'F') {
+            if(phys[input[j].page] = input[j].pid) {
+                if (input[j].action == 'F') {
+                    phys[input[j].page] = 0;
+                }
+            }
+            else {
+                int r = 0;
+                while (r < 20) {
+                    if (phys[r] == input[j].pid) {
+                        phys[r] = 0;
+                    }
+                    r++;
+                }
+            }
+        }
+        if (input[j].action == 'T') {
+            int r = 0;
+            while (r < 20) {
+                if (phys[r] == input[j].pid) {
+                    phys[r] = 0;
+                }
+                r++;
+            }
+        }
+        j++;
+    }
+    j = 0;
+    while (j < 30) {//Added to check stored memory.dat values
+        printf("\nLocation %i: %i", j, phys[j]);
         j++;
     }
     printf("\n");
-    
     fclose(memList);
 }
