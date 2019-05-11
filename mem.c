@@ -15,9 +15,19 @@
 #include <signal.h>
 #include <time.h>
 
+//Contains the information about the processes in the system, and how they are accessing memory.
 struct proc {
-    int pid, page;
+    int pid, page; //pid is a numeric value corresponding to a process running on the system
     char action;
+    /*
+    The action field is interpreted variously:
+    - 'C' means the process is created ('page' field not present)
+    - 'T' means the process terminated ('page' field present)
+    - 'A' means the process allocated memory at address 'page'
+    - 'R' means the process read 'page'
+    - 'W' means the process wrote to 'page'
+    - 'F' means the process freed memory at address 'page
+    */
 };
 
 void swap(int *a, int *b) {
