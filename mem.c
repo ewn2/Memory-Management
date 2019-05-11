@@ -64,23 +64,23 @@ int main() {
     int virt[50];
     j = 0;
     int t = 0;
-    int o = 0;
+    int n = 0;
     while (j <= all) {
-        if (input[j].action == 'A') {
+        if (input[j].action == 'A') {//FIFO will be implemented here
             if (physFIFO[input[j].page] == 0)
             {
                 physFIFO[input[j].page] = input[j].pid;
             }
             else {
-                while(t <= 20 && o == 0) {
+                while(t <= 20 && n == 0) {
                     if (physFIFO[t] == 0) {
                         physFIFO[t] = input[j].pid;
-                        o = 1;
+                        n = 1;
                     }
                     t++;
                 }
                 t = 0;
-                o = 0;
+                n = 0;
             }
         }
         if (input[j].action == 'R' || input[j].action == 'W' || input[j].action == 'F') {
@@ -117,7 +117,7 @@ int main() {
     printf("\nFIFO Policy\n");
     j = 0;
     while (j < 20) {//Added to check stored memory.dat values
-        printf("\nLocation %i: %i", j, physFIFO[j]);
+        printf("\nMemory Location %i: %i", j, physFIFO[j]);
         j++;
     }
     j = 0;
@@ -125,8 +125,7 @@ int main() {
     printf("\n");
     while (j < all) {//Must adjust later so it does not repeat unecessarily
         printf("\nProcess %i exists in Location(s): ", input[j].pid);
-        while (p < 20)
-        {
+        while (p < 20) {
             if (physFIFO[p] == input[j].pid){
                 printf("%i ", p);
             }
