@@ -69,7 +69,11 @@ int main() {
         physFIFO[j] = 0;
         j++;
     }
-    int virt[50];
+    int virt[50]; //10ˆ15 bytes of virtual address space for process-> 50 bits for virtual address
+    /*
+    The virtual address that the process generated has 2 components: the virtual page number and the offset within the page.
+    Our program should implement a virtual memory system with 20 physical pages.
+    */
     j = 0;
     int t = 0, n = 0;
     while (j <= all) {
