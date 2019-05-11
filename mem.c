@@ -44,9 +44,21 @@ int main() {
     }
     while(fgets(line, sizeof(line), memList) != NULL && i < all) {
         current = sscanf(line, "%i %c %i", &input[i].pid, &input[i].action, &input[i].page);
+        if (input[i].page != 1 && input[i].page != 2)
+        {
+            input[i].page = 0;
+        }
         all++;
         i++;
     }
     all--;
+    all--;
+    int j = all;
+    while (j>=0) {//Added to check stored memory.dat values
+        printf("\n%i %c %i", input[j].pid, input[j].action, input[j].page);
+        printf("---%i", j);
+        j--;
+    }
+    
     fclose(memList);
 }
