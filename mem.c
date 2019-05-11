@@ -16,9 +16,8 @@
 #include <time.h>
 
 struct proc {
-    int pid;
+    int pid, page;
     char action;
-    int page;
 };
 
 void swap(int *a, int *b) {
@@ -54,8 +53,7 @@ int main() {
     all--;
 
 
-    int j = 0;
-    int physFIFO[20];
+    int j = 0, physFIFO[20];
     while (j < 20)
     {
         physFIFO[j] = 0;
@@ -63,8 +61,7 @@ int main() {
     }
     int virt[50];
     j = 0;
-    int t = 0;
-    int n = 0;
+    int t = 0, n = 0;
     while (j <= all) {
         if (input[j].action == 'A') {//FIFO will be implemented here
             if (physFIFO[input[j].page] == 0)
