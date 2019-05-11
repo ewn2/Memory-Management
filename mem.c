@@ -21,8 +21,8 @@ struct proc {
     char action;
     /*
     The action field is interpreted variously:
-    - 'C' means the process is created ('page' field not present)
-    - 'T' means the process terminated ('page' field present)
+    - 'C' means the process is created ('page' field not present) => page = -1
+    - 'T' means the process terminated ('page' field not present)
     - 'A' means the process allocated memory at address 'page'
     - 'R' means the process read 'page'
     - 'W' means the process wrote to 'page'
@@ -48,7 +48,7 @@ int main() {
     time_t start = theTime;
     memList = fopen ("memory.dat", "r");
     if (memList == NULL) {
-        printf("\nUnable to either read memory.dat file\n");
+        printf("\nUnable to read memory.dat file\n");
         exit (1);
     }
     while(fgets(line, sizeof(line), memList) != NULL && i < all) {
