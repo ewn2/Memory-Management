@@ -113,13 +113,27 @@ int main() {
 
 
 
-    
+
     printf("\nFIFO Policy\n");
     j = 0;
     while (j < 20) {//Added to check stored memory.dat values
         printf("\nLocation %i: %i", j, physFIFO[j]);
         j++;
     }
+    j = 0;
+    int p = 0;
     printf("\n");
+    while (j < all) {//Must adjust later so it does not repeat unecessarily
+        printf("\nProcess %i exists in Location(s): ", input[j].pid);
+        while (p < 20)
+        {
+            if (physFIFO[p] == input[j].pid){
+                printf("%i ", p);
+            }
+            p++;
+        }
+        p = 0;
+        j++;
+    }
     fclose(memList);
 }
