@@ -53,12 +53,13 @@ int main() {
     }
     all--;
     all--;
-    int j = all;
-    while (j>=0) {//Added to check stored memory.dat values
+    int j = 0;
+    while (j <= all) {//Added to check stored memory.dat values
         printf("\n%i %c %i", input[j].pid, input[j].action, input[j].page);
         printf("---%i", j);
-        j--;
+        j++;
     }
+    printf("\n");
     
     fclose(memList);
 }
