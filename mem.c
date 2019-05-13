@@ -78,6 +78,13 @@ int main() {
     */
     j = 0;
     int t = 0, n = 0;
+    int slow[200];
+    while (j < 200)
+    {
+        slow[j] = 0;
+        j++;
+    }
+    j = 0;
     while (j <= all) {
         if (input[j].action == 'A') {//FIFO will be implemented here
             if (physFIFO[input[j].page] == 0)
@@ -92,12 +99,20 @@ int main() {
                     }
                     t++;
                 }
+                while(t > 20 && n == 0) {
+                    if (slow[t - 20] == 0) {
+                        slow[t - 20] = input[j].pid;
+                        n = 1;
+                    }
+                    t++;
+                }
+
                 t = 0;
                 n = 0;
             }
         }
         if (input[j].action == 'R' || input[j].action == 'W' || input[j].action == 'F') {
-            if(physFIFO[input[j].page] = input[j].pid) {
+            if(physFIFO[input[j].page] == input[j].pid) {
                 if (input[j].action == 'F') {
                     physFIFO[input[j].page] = 0;
                 }
