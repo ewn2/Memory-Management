@@ -79,17 +79,22 @@ int main() {
     j = 0;
     int t = 0, n = 0;
     int slow[200];
+    int order[200];
     while (j < 200)
     {
         slow[j] = 0;
         j++;
     }
     j = 0;
+    int mo = 0;
+    int cro = 0;
     while (j <= all) {
         if (input[j].action == 'A') {//FIFO will be implemented here
             if (physFIFO[input[j].page] == 0)
             {
                 physFIFO[input[j].page] = input[j].pid;
+                order[mo] = input[j].page;
+                mo++;
             }
             else {
                 while(t <= 20 && n == 0) {
@@ -99,14 +104,14 @@ int main() {
                     }
                     t++;
                 }
-                while(t > 20 && n == 0) {
-                    if (slow[t - 20] == 0) {
-                        slow[t - 20] = input[j].pid;
+                while(n == 0) {
+                    if (order[cro] == input[j].page) {
+                        physFIFO[order[cro]] = input[j].pid;
                         n = 1;
                     }
-                    t++;
+                    cro++;
                 }
-
+                cro = 0;
                 t = 0;
                 n = 0;
             }
