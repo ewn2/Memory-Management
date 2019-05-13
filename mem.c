@@ -46,6 +46,8 @@ int main() {
     time (&theTime);
     timeinfo = localtime(&theTime);
     time_t start = theTime;
+    int inn[200];
+    int ro = 0;
     memList = fopen ("memory.dat", "r");
     if (memList == NULL) {
         printf("\nUnable to read memory.dat file\n");
@@ -55,6 +57,11 @@ int main() {
         current = sscanf(line, "%i %c %i", &input[i].pid, &input[i].action, &input[i].page);
         if (input[i].action == 'C' || input[i].action == 'T') {
             input[i].page = -1;
+        }
+        if (input[i].page != -1 && inn[ro] != input[i].page)
+        {
+            ro++;
+            inn[ro] = input[i].page;
         }
         all++;
         i++;
@@ -93,11 +100,9 @@ int main() {
             if (physFIFO[input[j].page] == 0)
             {
                 physFIFO[input[j].page] = input[j].pid;
-                order[mo] = input[j].page;
-                mo++;
             }
             else {
-                while(t <= 20 && n == 0) {
+                while(t < 20 && n == 0) {
                     if (physFIFO[t] == 0) {
                         physFIFO[t] = input[j].pid;
                         n = 1;
@@ -105,13 +110,10 @@ int main() {
                     t++;
                 }
                 while(n == 0) {
-                    if (order[cro] == input[j].page) {
-                        physFIFO[order[cro]] = input[j].pid;
-                        n = 1;
-                    }
+                    physFIFO[inn[cro]] = input[j].pid;
                     cro++;
+                    n = 1;
                 }
-                cro = 0;
                 t = 0;
                 n = 0;
             }
@@ -150,20 +152,36 @@ int main() {
     printf("\nFIFO Policy\n");
     j = 0;
     while (j < 20) {//Added to check stored memory.dat values
-        printf("\nMemory Location %i: %i", j, physFIFO[j]);
+        printf("\nPhysical Memory Location %i: %i", j, physFIFO[j]);
         j++;
     }
     j = 0;
     int p = 0;
     printf("\n");
-    while (j < all) {//Must adjust later so it does not repeat unecessarily
-        printf("\nProcess %i exists in Location(s): ", input[j].pid);
-        while (p < 20) {
-            if (physFIFO[p] == input[j].pid){
-                printf("%i ", p);
+    int mar = 0;
+    int done[all];
+    int good = 1;
+    int tr = 0;
+    while (j <= all) {//Must adjust later so it does not repeat unecessarily
+        while (tr <= all) {
+            if (input[j].pid == done[tr]) {
+                good = 0;
             }
-            p++;
+            tr++;
         }
+        tr = 0;
+        if(good == 1) {
+            printf("\nProcess %i exists in Physical Location(s): ", input[j].pid);
+            done[mar] = input[j].pid;
+            mar++;
+            while (p < 20) {
+                if (physFIFO[p] == input[j].pid){
+                    printf("%i ", p);
+                }
+                p++;
+            }
+        }
+        good = 1;
         p = 0;
         j++;
     }
