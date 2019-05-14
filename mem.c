@@ -48,9 +48,7 @@ int main() {
     time (&theTime);
     timeinfo = localtime(&theTime);
     time_t start = theTime;
-    int inn[200];
-    int in2[200];
-    int ro = 0;
+    int inn[200], in2[200], ro = 0;
     memList = fopen ("memory.dat", "r");
     if (memList == NULL) {
         printf("\nUnable to read memory.dat file\n");
@@ -71,7 +69,6 @@ int main() {
     }
     all--;
     all--;
-
     int j = 0, physFIFO[20], physLRU[20], physRAN[20];
     while (j < 20) {
         physFIFO[j] = 0;
@@ -80,28 +77,14 @@ int main() {
     memcpy(physLRU, physFIFO, 20);
     memcpy(physRAN, physFIFO, 20);
     memcpy(in2, inn, 200);
-    int virt[50]; //10ˆ15 bytes of virtual address space for process-> 50 bits for virtual address
-    /*
-    The virtual address that the process generated has 2 components: the virtual page number and the offset within the page.
-    Our program should implement a virtual memory system with 20 physical pages.
-    */
     j = 0;
-    int t = 0, n = 0;
-    int slow[200];
-    int order[200];
+    int t = 0, n = 0, slow[200], order[200];
     while (j < 200) {
         slow[j] = 0;
         j++;
     }
     j = 0;
-    int mo = 0;
-    int cro = 0;
-    int r = 0;
-    int jn = 0;
-    int hap = 0;
-    int mok = 0;
-    int rek = 0;
-    int jos = 0;
+    int mo = 0, cro = 0, r = 0, jn = 0, hap = 0, mok = 0, rek = 0, jos = 0;
     while (j <= all) {
         if (input[j].action == 'A') {
             if (physFIFO[input[j].page] == 0) {
@@ -207,20 +190,15 @@ int main() {
         }
         j++;
     }
-
     printf("\nFIFO Policy\n");
     j = 0;
-    while (j < 20) {//Added to check stored memory.dat values
+    while (j < 20) {
         printf("\nPhysical Memory Location %i: %i", j, physFIFO[j]);
         j++;
     }
-    j = 0;
-    int p = 0;
     printf("\n");
-    int mar = 0;
-    int done[all];
-    int good = 1;
-    int tr = 0;
+    j = 0;
+    int p = 0, mar = 0, done[all], good = 1, tr = 0;
     while (j <= all) {
         while (tr <= all) {
             if (input[j].pid == done[tr]) {
@@ -247,7 +225,7 @@ int main() {
     printf("\nEND FIFO\n");
     printf("\nLRU Policy\n");
     j = 0;
-    while (j < 20) {//Added to check stored memory.dat values
+    while (j < 20) {
         printf("\nPhysical Memory Location %i: %i", j, physLRU[j]);
         j++;
     }
