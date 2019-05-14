@@ -37,6 +37,8 @@ void swap(int *a, int *b) {
 }
 
 int main() {
+    srand(time(NULL));
+    rand();
     char line[200];
     int i = 0, all = 1, current;
     FILE *memList;
@@ -55,7 +57,7 @@ int main() {
         exit (1);
     }
     while(fgets(line, sizeof(line), memList) != NULL && i < all) {
-        current = sscanf(line, "%i %c %i", &input[i].pid, &input[i].action, &input[i].page);
+        current = sscanf(line, "%i %c %d", &input[i].pid, &input[i].action, &input[i].page);
         if (input[i].action == 'C' || input[i].action == 'T') {
             input[i].page = -1;
         }
@@ -105,18 +107,21 @@ int main() {
             if (physFIFO[input[j].page] == 0) {
                 physFIFO[input[j].page] = input[j].pid;
                 physLRU[input[j].page] = input[j].pid;
+                physRAN[input[j].page] = input[j].pid;
             }
             else {
                 while(t < 20 && n == 0) {
                     if (physFIFO[t] == 0) {
                         physFIFO[t] = input[j].pid;
                         physLRU[t] = input[j].pid;
+                        physRAN[t] = input[j].pid;
                         n = 1;
                     }
                     t++;
                 }
                 while(n == 0) {
                     physFIFO[inn[cro]] = input[j].pid;
+                    physRAN[rand() % 20] = input[j].pid;
                     while (jos < all) {
                         if (in2[cro] != 0) {
                         physLRU[in2[cro]] = input[j].pid;
@@ -147,6 +152,11 @@ int main() {
                     physFIFO[input[j].page] = 0;
                 }
             }
+            if(physRAN[input[j].page] == input[j].pid) {
+                if (input[j].action == 'F') {
+                    physRAN[input[j].page] = 0;
+                }
+            }
             if(physLRU[input[j].page] == input[j].pid) {
                 if (input[j].action == 'F') {
                     physLRU[input[j].page] = 0;
@@ -157,6 +167,15 @@ int main() {
                 while (r < 20) {
                     if (physLRU[r] == input[j].pid) {
                         physLRU[r] = 0;
+                    }
+                    r++;
+                }
+            }
+            if(physRAN[input[j].page] != input[j].pid) {
+                r = 0;
+                while (r < 20) {
+                    if (physRAN[r] == input[j].pid) {
+                        physRAN[r] = 0;
                     }
                     r++;
                 }
@@ -179,6 +198,9 @@ int main() {
                 }
                 if (physLRU[r] == input[j].pid) {
                     physLRU[r] = 0;
+                }
+                if (physRAN[r] == input[j].pid) {
+                    physRAN[r] = 0;
                 }
                 r++;
             }
@@ -265,5 +287,45 @@ int main() {
     }
     printf("\nEND LRU\n");
     printf("\nRANDOM Policy\n");
+    j = 0;
+    while (j < 20) {
+        printf("\nPhysical Memory Location %i: %i", j, physRAN[j]);
+        j++;
+    }
+    j = 0;
+    p = 0;
+    printf("\n");
+    mar = 0;
+    while(j < all) {
+        done[j] = 0;
+        j++;
+    }
+    j = 0;
+    good = 1;
+    tr = 0;
+    while (j <= all) {
+        while (tr <= all) {
+            if (input[j].pid == done[tr]) {
+                good = 0;
+            }
+            tr++;
+        }
+        tr = 0;
+        if(good == 1) {
+            printf("\nProcess %i exists in Physical Location(s): ", input[j].pid);
+            done[mar] = input[j].pid;
+            mar++;
+            while (p < 20) {
+                if (physRAN[p] == input[j].pid){
+                    printf("%i ", p);
+                }
+                p++;
+            }
+        }
+        good = 1;
+        p = 0;
+        j++;
+    }
+    printf("\nEND RANDOM\n");
     fclose(memList);
 }
