@@ -1,7 +1,4 @@
-# 142-a3
-CMPE 142: Operating Systems
-
-Assignment 3: Memory Management
+Memory Management Simulation
 
 Reads in 'memory.dat' file with format:
 
